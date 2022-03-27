@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package stricache;
+
+option go_package = "./stricache";
+
+message StringItem {
+  string key = 1;
+  string value = 2;
+  string expiration = 3;
+}
+
+message IntItem {
+  string key = 1;
+  int64 value = 2;
+  string expiration = 3;
+}
+
+message FloatItem {
+  string key = 1;
+  float value = 2;
+  string expiration = 3;
+}
+
+message GetKey {
+    string key = 1;
+}
+
+message Success {
+  bool success = 1;
+}
+
+service StricacheService {
+    rpc AddString (StringItem) returns (StringItem);
+    rpc AddInt (IntItem) returns (IntItem);
+    rpc AddFloat (FloatItem) returns (FloatItem);
+    rpc UnshiftString (StringItem) returns (StringItem);
+    rpc UnshiftInt (IntItem) returns (IntItem);
+    rpc UnshiftFloat (FloatItem) returns (FloatItem);
+    rpc PushString (StringItem) returns (StringItem);
+    rpc PushInt (IntItem) returns (IntItem);
+    rpc PushFloat (FloatItem) returns (FloatItem);
+    rpc GetString (GetKey) returns (StringItem);
+    rpc GetInt (GetKey) returns (IntItem);
+    rpc GetFloat (GetKey) returns (FloatItem);
+    rpc DeleteKey(GetKey) returns (Success);
+    rpc ShiftKey(GetKey) returns (Success);
+    rpc PopKey(GetKey) returns (Success);
+}
