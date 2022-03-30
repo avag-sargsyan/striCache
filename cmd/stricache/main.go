@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -17,9 +16,6 @@ var (
 )
 
 func main() {
-	flag.StringVar(&address, "addr", ":7999", "Address on which you want to run server")
-	flag.Parse()
-
 	opts := []grpc.ServerOption{
 		grpc.MaxConcurrentStreams(200),
 	}
@@ -30,7 +26,7 @@ func main() {
 
 	reflection.Register(grpcServer)
 
-	lis, err := net.Listen("tcp", address)
+	lis, err := net.Listen("tcp", "127.0.0.1:7999")
 	if err != nil {
 		log.Fatalf("Error in starting server %v", err)
 	}

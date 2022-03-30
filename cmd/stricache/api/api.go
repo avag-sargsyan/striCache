@@ -2,31 +2,29 @@ package api
 
 import (
 	"context"
-	"reflect"
-	"time"
 
 	"github.com/avag-sargsyan/stricache/internal/storage"
 	"github.com/avag-sargsyan/stricache/proto/stricache"
 )
 
-// rpc AddString (StringItem) returns (StringItem);
-// rpc AddInt (IntItem) returns (IntItem);
-// rpc AddFloat (FloatItem) returns (FloatItem);
-// rpc UnshiftString (StringItem) returns (StringItem);
-// rpc UnshiftInt (IntItem) returns (IntItem);
-// rpc UnshiftFloat (FloatItem) returns (FloatItem);
-// rpc GetString (GetKey) returns (StringItem);
-// rpc GetInt (GetKey) returns (IntItem);
-// rpc GetFloat (GetKey) returns (FloatItem);
-// rpc DeleteString(GetKey) returns (Success);
-// rpc DeleteInt(GetKey) returns (Success);
-// rpc DeleteFloat(GetKey) returns (Success);
-// rpc ShiftString(GetKey) returns (Success);
-// rpc ShiftInt(GetKey) returns (Success);
-// rpc ShiftFloat(GetKey) returns (Success);
-// rpc PopString(GetKey) returns (Success);
-// rpc PopInt(GetKey) returns (Success);
-// rpc PopFloat(GetKey) returns (Success);
+// AddString(context.Context, *StringItem) (*StringItem, error)
+// 	AddInt(context.Context, *IntItem) (*IntItem, error)
+// 	AddFloat(context.Context, *FloatItem) (*FloatItem, error)
+// 	UnshiftString(context.Context, *StringItem) (*StringItem, error)
+// 	UnshiftInt(context.Context, *IntItem) (*IntItem, error)
+// 	UnshiftFloat(context.Context, *FloatItem) (*FloatItem, error)
+// 	GetString(context.Context, *GetKey) (*StringItem, error)
+// 	GetInt(context.Context, *GetKey) (*IntItem, error)
+// 	GetFloat(context.Context, *GetKey) (*FloatItem, error)
+// 	DeleteString(context.Context, *GetKey) (*Success, error)
+// 	DeleteInt(context.Context, *GetKey) (*Success, error)
+// 	DeleteFloat(context.Context, *GetKey) (*Success, error)
+// 	ShiftString(context.Context, *EmptyR) (*Success, error)
+// 	ShiftInt(context.Context, *EmptyR) (*Success, error)
+// 	ShiftFloat(context.Context, *EmptyR) (*Success, error)
+// 	PopString(context.Context, *EmptyR) (*Success, error)
+// 	PopInt(context.Context, *EmptyR) (*Success, error)
+// 	PopFloat(context.Context, *EmptyR) (*Success, error)
 
 func (c *storage.Cache) AddString(ctx context.Context, item *stricache.StringItem) (*stricache.StringItem, error) {
 	c.mu.Lock()
@@ -193,7 +191,7 @@ func (c *storage.Cache) DeleteFloat(ctx context.Context, args *stricache.GetKey)
 func (c *storage.Cache) ShiftString(ctx context.Context) (*stricache.Success, error) {
 	var first string
 	c.mu.Lock()
-	first, c.Strings.list = c.Strings.list[0], c.Strings.list[1:len(c.Strings.list-1)]
+	first, c.Strings.list = c.Strings.list[0], c.Strings.list[1:len(c.Strings.list)-1]
 	// Sync
 	for i, v := range c.Strings.items {
 		if first == v {
@@ -209,7 +207,7 @@ func (c *storage.Cache) ShiftString(ctx context.Context) (*stricache.Success, er
 func (c *storage.Cache) ShiftInt(ctx context.Context) (*stricache.Success, error) {
 	var first string
 	c.mu.Lock()
-	first, c.Ints.list = c.Ints.list[0], c.Ints.list[1:len(c.Strings.list-1)]
+	first, c.Ints.list = c.Ints.list[0], c.Ints.list[1:len(c.Ints.list)-1]
 	// Sync
 	for i, v := range c.Ints.items {
 		if first == v {
@@ -225,7 +223,7 @@ func (c *storage.Cache) ShiftInt(ctx context.Context) (*stricache.Success, error
 func (c *storage.Cache) ShiftFloat(ctx context.Context) (*stricache.Success, error) {
 	var first string
 	c.mu.Lock()
-	first, c.Floats.list = c.Floats.list[0], c.Floats.list[1:len(c.Strings.list-1)]
+	first, c.Floats.list = c.Floats.list[0], c.Floats.list[1:len(c.Floats.list)-1]
 	// Sync
 	for i, v := range c.Floats.items {
 		if first == v {
@@ -241,7 +239,7 @@ func (c *storage.Cache) ShiftFloat(ctx context.Context) (*stricache.Success, err
 func (c *storage.Cache) PopString(ctx context.Context) (*stricache.Success, error) {
 	var first string
 	c.mu.Lock()
-	c.Strings.list, last = c.Strings.list[1:len(c.Strings.list-1)], c.Strings.list[len(c.Strings.list-1):]
+	c.Strings.list, last = c.Strings.list[:len(c.Strings.list)-1], c.Strings.list[len(c.Strings.list)-1]
 	// Sync
 	for i, v := range c.Strings.items {
 		if last == v {
@@ -254,10 +252,10 @@ func (c *storage.Cache) PopString(ctx context.Context) (*stricache.Success, erro
 	}, nil
 }
 
-func (c *storage.Cache) ShiftInt(ctx context.Context) (*stricache.Success, error) {
+func (c *storage.Cache) PopInt(ctx context.Context) (*stricache.Success, error) {
 	var first string
 	c.mu.Lock()
-	c.Ints.list, last = c.Ints.list[1:len(c.Strings.list-1)], c.Ints.list[len(c.Strings.list-1):]
+	c.Ints.list, last = c.Ints.list[:len(c.Ints.list)-1], c.Ints.list[len(c.Ints.list)-1]
 	// Sync
 	for i, v := range c.Ints.items {
 		if last == v {
@@ -270,10 +268,10 @@ func (c *storage.Cache) ShiftInt(ctx context.Context) (*stricache.Success, error
 	}, nil
 }
 
-func (c *storage.Cache) ShiftString(ctx context.Context) (*stricache.Success, error) {
+func (c *storage.Cache) PopFloat(ctx context.Context) (*stricache.Success, error) {
 	var first string
 	c.mu.Lock()
-	c.Floats.list, last = c.Floats.list[1:len(c.Strings.list-1)], c.Floats.list[len(c.Strings.list-1):]
+	c.Floats.list, last = c.Floats.list[:len(c.Floats.list)-1], c.Floats.list[len(c.Floats.list)-1]
 	// Sync
 	for i, v := range c.Floats.items {
 		if last == v {
