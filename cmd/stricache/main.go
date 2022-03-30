@@ -8,11 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"github.com/avag-sargsyan/stricache/proto/stricache"
-	"github.com/avag-sargsyan/stricache/internal/storage"
-)
-
-var (
-	address string
+	"github.com/avag-sargsyan/stricache/cmd/stricache/api"
 )
 
 func main() {
@@ -22,7 +18,7 @@ func main() {
 
 	// create a gRPC server object
 	grpcServer := grpc.NewServer(opts...)
-	stricache.RegisterStricacheServiceServer(grpcServer, storage.NewCacheService())
+	stricache.RegisterStricacheServiceServer(grpcServer, api.NewCacheService())
 
 	reflection.Register(grpcServer)
 
@@ -30,7 +26,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error in starting server %v", err)
 	}
-	fmt.Println("Started the server on:", address)
+	fmt.Println("Started the server on: 7999")
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("err in serving gRPC %v\n", err)
 	}

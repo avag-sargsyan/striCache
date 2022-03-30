@@ -234,7 +234,7 @@ type StricacheServiceServer interface {
 	PopString(context.Context, *EmptyR) (*Success, error)
 	PopInt(context.Context, *EmptyR) (*Success, error)
 	PopFloat(context.Context, *EmptyR) (*Success, error)
-	mustEmbedUnimplementedStricacheServiceServer()
+	// mustEmbedUnimplementedStricacheServiceServer()
 }
 
 // UnimplementedStricacheServiceServer must be embedded to have forward compatible implementations.
