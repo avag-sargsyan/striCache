@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.3
-// source: stricache.proto
+// source: proto/stricache.proto
 
 package stricache
 
@@ -28,15 +28,18 @@ type StricacheServiceClient interface {
 	UnshiftString(ctx context.Context, in *StringItem, opts ...grpc.CallOption) (*StringItem, error)
 	UnshiftInt(ctx context.Context, in *IntItem, opts ...grpc.CallOption) (*IntItem, error)
 	UnshiftFloat(ctx context.Context, in *FloatItem, opts ...grpc.CallOption) (*FloatItem, error)
-	PushString(ctx context.Context, in *StringItem, opts ...grpc.CallOption) (*StringItem, error)
-	PushInt(ctx context.Context, in *IntItem, opts ...grpc.CallOption) (*IntItem, error)
-	PushFloat(ctx context.Context, in *FloatItem, opts ...grpc.CallOption) (*FloatItem, error)
 	GetString(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*StringItem, error)
 	GetInt(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*IntItem, error)
 	GetFloat(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*FloatItem, error)
-	DeleteKey(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error)
-	ShiftKey(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error)
-	PopKey(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error)
+	DeleteString(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error)
+	DeleteInt(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error)
+	DeleteFloat(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error)
+	ShiftString(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error)
+	ShiftInt(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error)
+	ShiftFloat(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error)
+	PopString(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error)
+	PopInt(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error)
+	PopFloat(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error)
 }
 
 type stricacheServiceClient struct {
@@ -101,33 +104,6 @@ func (c *stricacheServiceClient) UnshiftFloat(ctx context.Context, in *FloatItem
 	return out, nil
 }
 
-func (c *stricacheServiceClient) PushString(ctx context.Context, in *StringItem, opts ...grpc.CallOption) (*StringItem, error) {
-	out := new(StringItem)
-	err := c.cc.Invoke(ctx, "/stricache.StricacheService/PushString", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *stricacheServiceClient) PushInt(ctx context.Context, in *IntItem, opts ...grpc.CallOption) (*IntItem, error) {
-	out := new(IntItem)
-	err := c.cc.Invoke(ctx, "/stricache.StricacheService/PushInt", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *stricacheServiceClient) PushFloat(ctx context.Context, in *FloatItem, opts ...grpc.CallOption) (*FloatItem, error) {
-	out := new(FloatItem)
-	err := c.cc.Invoke(ctx, "/stricache.StricacheService/PushFloat", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *stricacheServiceClient) GetString(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*StringItem, error) {
 	out := new(StringItem)
 	err := c.cc.Invoke(ctx, "/stricache.StricacheService/GetString", in, out, opts...)
@@ -155,27 +131,81 @@ func (c *stricacheServiceClient) GetFloat(ctx context.Context, in *GetKey, opts 
 	return out, nil
 }
 
-func (c *stricacheServiceClient) DeleteKey(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error) {
+func (c *stricacheServiceClient) DeleteString(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error) {
 	out := new(Success)
-	err := c.cc.Invoke(ctx, "/stricache.StricacheService/DeleteKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/DeleteString", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *stricacheServiceClient) ShiftKey(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error) {
+func (c *stricacheServiceClient) DeleteInt(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error) {
 	out := new(Success)
-	err := c.cc.Invoke(ctx, "/stricache.StricacheService/ShiftKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/DeleteInt", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *stricacheServiceClient) PopKey(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error) {
+func (c *stricacheServiceClient) DeleteFloat(ctx context.Context, in *GetKey, opts ...grpc.CallOption) (*Success, error) {
 	out := new(Success)
-	err := c.cc.Invoke(ctx, "/stricache.StricacheService/PopKey", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/DeleteFloat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stricacheServiceClient) ShiftString(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error) {
+	out := new(Success)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/ShiftString", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stricacheServiceClient) ShiftInt(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error) {
+	out := new(Success)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/ShiftInt", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stricacheServiceClient) ShiftFloat(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error) {
+	out := new(Success)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/ShiftFloat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stricacheServiceClient) PopString(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error) {
+	out := new(Success)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/PopString", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stricacheServiceClient) PopInt(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error) {
+	out := new(Success)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/PopInt", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stricacheServiceClient) PopFloat(ctx context.Context, in *EmptyR, opts ...grpc.CallOption) (*Success, error) {
+	out := new(Success)
+	err := c.cc.Invoke(ctx, "/stricache.StricacheService/PopFloat", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -192,15 +222,18 @@ type StricacheServiceServer interface {
 	UnshiftString(context.Context, *StringItem) (*StringItem, error)
 	UnshiftInt(context.Context, *IntItem) (*IntItem, error)
 	UnshiftFloat(context.Context, *FloatItem) (*FloatItem, error)
-	PushString(context.Context, *StringItem) (*StringItem, error)
-	PushInt(context.Context, *IntItem) (*IntItem, error)
-	PushFloat(context.Context, *FloatItem) (*FloatItem, error)
 	GetString(context.Context, *GetKey) (*StringItem, error)
 	GetInt(context.Context, *GetKey) (*IntItem, error)
 	GetFloat(context.Context, *GetKey) (*FloatItem, error)
-	DeleteKey(context.Context, *GetKey) (*Success, error)
-	ShiftKey(context.Context, *GetKey) (*Success, error)
-	PopKey(context.Context, *GetKey) (*Success, error)
+	DeleteString(context.Context, *GetKey) (*Success, error)
+	DeleteInt(context.Context, *GetKey) (*Success, error)
+	DeleteFloat(context.Context, *GetKey) (*Success, error)
+	ShiftString(context.Context, *EmptyR) (*Success, error)
+	ShiftInt(context.Context, *EmptyR) (*Success, error)
+	ShiftFloat(context.Context, *EmptyR) (*Success, error)
+	PopString(context.Context, *EmptyR) (*Success, error)
+	PopInt(context.Context, *EmptyR) (*Success, error)
+	PopFloat(context.Context, *EmptyR) (*Success, error)
 	mustEmbedUnimplementedStricacheServiceServer()
 }
 
@@ -226,15 +259,6 @@ func (UnimplementedStricacheServiceServer) UnshiftInt(context.Context, *IntItem)
 func (UnimplementedStricacheServiceServer) UnshiftFloat(context.Context, *FloatItem) (*FloatItem, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnshiftFloat not implemented")
 }
-func (UnimplementedStricacheServiceServer) PushString(context.Context, *StringItem) (*StringItem, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PushString not implemented")
-}
-func (UnimplementedStricacheServiceServer) PushInt(context.Context, *IntItem) (*IntItem, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PushInt not implemented")
-}
-func (UnimplementedStricacheServiceServer) PushFloat(context.Context, *FloatItem) (*FloatItem, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PushFloat not implemented")
-}
 func (UnimplementedStricacheServiceServer) GetString(context.Context, *GetKey) (*StringItem, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetString not implemented")
 }
@@ -244,14 +268,32 @@ func (UnimplementedStricacheServiceServer) GetInt(context.Context, *GetKey) (*In
 func (UnimplementedStricacheServiceServer) GetFloat(context.Context, *GetKey) (*FloatItem, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFloat not implemented")
 }
-func (UnimplementedStricacheServiceServer) DeleteKey(context.Context, *GetKey) (*Success, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteKey not implemented")
+func (UnimplementedStricacheServiceServer) DeleteString(context.Context, *GetKey) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteString not implemented")
 }
-func (UnimplementedStricacheServiceServer) ShiftKey(context.Context, *GetKey) (*Success, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ShiftKey not implemented")
+func (UnimplementedStricacheServiceServer) DeleteInt(context.Context, *GetKey) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteInt not implemented")
 }
-func (UnimplementedStricacheServiceServer) PopKey(context.Context, *GetKey) (*Success, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PopKey not implemented")
+func (UnimplementedStricacheServiceServer) DeleteFloat(context.Context, *GetKey) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFloat not implemented")
+}
+func (UnimplementedStricacheServiceServer) ShiftString(context.Context, *EmptyR) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShiftString not implemented")
+}
+func (UnimplementedStricacheServiceServer) ShiftInt(context.Context, *EmptyR) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShiftInt not implemented")
+}
+func (UnimplementedStricacheServiceServer) ShiftFloat(context.Context, *EmptyR) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShiftFloat not implemented")
+}
+func (UnimplementedStricacheServiceServer) PopString(context.Context, *EmptyR) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PopString not implemented")
+}
+func (UnimplementedStricacheServiceServer) PopInt(context.Context, *EmptyR) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PopInt not implemented")
+}
+func (UnimplementedStricacheServiceServer) PopFloat(context.Context, *EmptyR) (*Success, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PopFloat not implemented")
 }
 func (UnimplementedStricacheServiceServer) mustEmbedUnimplementedStricacheServiceServer() {}
 
@@ -374,60 +416,6 @@ func _StricacheService_UnshiftFloat_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StricacheService_PushString_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StringItem)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StricacheServiceServer).PushString(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/stricache.StricacheService/PushString",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StricacheServiceServer).PushString(ctx, req.(*StringItem))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _StricacheService_PushInt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IntItem)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StricacheServiceServer).PushInt(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/stricache.StricacheService/PushInt",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StricacheServiceServer).PushInt(ctx, req.(*IntItem))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _StricacheService_PushFloat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FloatItem)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StricacheServiceServer).PushFloat(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/stricache.StricacheService/PushFloat",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StricacheServiceServer).PushFloat(ctx, req.(*FloatItem))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _StricacheService_GetString_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetKey)
 	if err := dec(in); err != nil {
@@ -482,56 +470,164 @@ func _StricacheService_GetFloat_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StricacheService_DeleteKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _StricacheService_DeleteString_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StricacheServiceServer).DeleteKey(ctx, in)
+		return srv.(StricacheServiceServer).DeleteString(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stricache.StricacheService/DeleteKey",
+		FullMethod: "/stricache.StricacheService/DeleteString",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StricacheServiceServer).DeleteKey(ctx, req.(*GetKey))
+		return srv.(StricacheServiceServer).DeleteString(ctx, req.(*GetKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StricacheService_ShiftKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _StricacheService_DeleteInt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StricacheServiceServer).ShiftKey(ctx, in)
+		return srv.(StricacheServiceServer).DeleteInt(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stricache.StricacheService/ShiftKey",
+		FullMethod: "/stricache.StricacheService/DeleteInt",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StricacheServiceServer).ShiftKey(ctx, req.(*GetKey))
+		return srv.(StricacheServiceServer).DeleteInt(ctx, req.(*GetKey))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StricacheService_PopKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _StricacheService_DeleteFloat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetKey)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StricacheServiceServer).PopKey(ctx, in)
+		return srv.(StricacheServiceServer).DeleteFloat(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stricache.StricacheService/PopKey",
+		FullMethod: "/stricache.StricacheService/DeleteFloat",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StricacheServiceServer).PopKey(ctx, req.(*GetKey))
+		return srv.(StricacheServiceServer).DeleteFloat(ctx, req.(*GetKey))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StricacheService_ShiftString_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyR)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StricacheServiceServer).ShiftString(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stricache.StricacheService/ShiftString",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StricacheServiceServer).ShiftString(ctx, req.(*EmptyR))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StricacheService_ShiftInt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyR)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StricacheServiceServer).ShiftInt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stricache.StricacheService/ShiftInt",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StricacheServiceServer).ShiftInt(ctx, req.(*EmptyR))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StricacheService_ShiftFloat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyR)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StricacheServiceServer).ShiftFloat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stricache.StricacheService/ShiftFloat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StricacheServiceServer).ShiftFloat(ctx, req.(*EmptyR))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StricacheService_PopString_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyR)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StricacheServiceServer).PopString(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stricache.StricacheService/PopString",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StricacheServiceServer).PopString(ctx, req.(*EmptyR))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StricacheService_PopInt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyR)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StricacheServiceServer).PopInt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stricache.StricacheService/PopInt",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StricacheServiceServer).PopInt(ctx, req.(*EmptyR))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StricacheService_PopFloat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyR)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StricacheServiceServer).PopFloat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/stricache.StricacheService/PopFloat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StricacheServiceServer).PopFloat(ctx, req.(*EmptyR))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -568,18 +664,6 @@ var StricacheService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _StricacheService_UnshiftFloat_Handler,
 		},
 		{
-			MethodName: "PushString",
-			Handler:    _StricacheService_PushString_Handler,
-		},
-		{
-			MethodName: "PushInt",
-			Handler:    _StricacheService_PushInt_Handler,
-		},
-		{
-			MethodName: "PushFloat",
-			Handler:    _StricacheService_PushFloat_Handler,
-		},
-		{
 			MethodName: "GetString",
 			Handler:    _StricacheService_GetString_Handler,
 		},
@@ -592,18 +676,42 @@ var StricacheService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _StricacheService_GetFloat_Handler,
 		},
 		{
-			MethodName: "DeleteKey",
-			Handler:    _StricacheService_DeleteKey_Handler,
+			MethodName: "DeleteString",
+			Handler:    _StricacheService_DeleteString_Handler,
 		},
 		{
-			MethodName: "ShiftKey",
-			Handler:    _StricacheService_ShiftKey_Handler,
+			MethodName: "DeleteInt",
+			Handler:    _StricacheService_DeleteInt_Handler,
 		},
 		{
-			MethodName: "PopKey",
-			Handler:    _StricacheService_PopKey_Handler,
+			MethodName: "DeleteFloat",
+			Handler:    _StricacheService_DeleteFloat_Handler,
+		},
+		{
+			MethodName: "ShiftString",
+			Handler:    _StricacheService_ShiftString_Handler,
+		},
+		{
+			MethodName: "ShiftInt",
+			Handler:    _StricacheService_ShiftInt_Handler,
+		},
+		{
+			MethodName: "ShiftFloat",
+			Handler:    _StricacheService_ShiftFloat_Handler,
+		},
+		{
+			MethodName: "PopString",
+			Handler:    _StricacheService_PopString_Handler,
+		},
+		{
+			MethodName: "PopInt",
+			Handler:    _StricacheService_PopInt_Handler,
+		},
+		{
+			MethodName: "PopFloat",
+			Handler:    _StricacheService_PopFloat_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "stricache.proto",
+	Metadata: "proto/stricache.proto",
 }

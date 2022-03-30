@@ -7,19 +7,16 @@ option go_package = "./stricache";
 message StringItem {
   string key = 1;
   string value = 2;
-  string expiration = 3;
 }
 
 message IntItem {
   string key = 1;
   int64 value = 2;
-  string expiration = 3;
 }
 
 message FloatItem {
   string key = 1;
-  float value = 2;
-  string expiration = 3;
+  double value = 2;
 }
 
 message GetKey {
@@ -30,6 +27,8 @@ message Success {
   bool success = 1;
 }
 
+message EmptyR {}
+
 service StricacheService {
     rpc AddString (StringItem) returns (StringItem);
     rpc AddInt (IntItem) returns (IntItem);
@@ -37,13 +36,16 @@ service StricacheService {
     rpc UnshiftString (StringItem) returns (StringItem);
     rpc UnshiftInt (IntItem) returns (IntItem);
     rpc UnshiftFloat (FloatItem) returns (FloatItem);
-    rpc PushString (StringItem) returns (StringItem);
-    rpc PushInt (IntItem) returns (IntItem);
-    rpc PushFloat (FloatItem) returns (FloatItem);
     rpc GetString (GetKey) returns (StringItem);
     rpc GetInt (GetKey) returns (IntItem);
     rpc GetFloat (GetKey) returns (FloatItem);
-    rpc DeleteKey(GetKey) returns (Success);
-    rpc ShiftKey(GetKey) returns (Success);
-    rpc PopKey(GetKey) returns (Success);
+    rpc DeleteString(GetKey) returns (Success);
+    rpc DeleteInt(GetKey) returns (Success);
+    rpc DeleteFloat(GetKey) returns (Success);
+    rpc ShiftString(EmptyR) returns (Success);
+    rpc ShiftInt(EmptyR) returns (Success);
+    rpc ShiftFloat(EmptyR) returns (Success);
+    rpc PopString(EmptyR) returns (Success);
+    rpc PopInt(EmptyR) returns (Success);
+    rpc PopFloat(EmptyR) returns (Success);
 }
